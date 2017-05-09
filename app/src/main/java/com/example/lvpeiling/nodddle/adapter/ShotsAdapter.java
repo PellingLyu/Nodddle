@@ -46,7 +46,7 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsAdapter.ViewHolder> 
             holder.tvComment.setText(item.getComments_count()+"");
             holder.tvView.setText(item.getViews_count()+"");
             holder.tvLike.setText(item.getLikes_count()+"");
-            Glide.with(mContext).load(item.getImages().getNormal()).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.mipmap.placeholder).crossFade().into(holder.ivThumbnail);
+            Glide.with(mContext).load(item.getImages().getNormal()).diskCacheStrategy(DiskCacheStrategy.ALL).thumbnail(0.2f).placeholder(R.mipmap.placeholder).crossFade().into(holder.ivThumbnail);
         }
     }
 

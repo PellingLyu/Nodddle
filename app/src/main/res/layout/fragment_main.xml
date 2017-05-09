@@ -1,19 +1,46 @@
-<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/refreshLayout"
-    tools:context="com.example.lvpeiling.nodddle.fragment.MainFragment">
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_shots"
+    android:layout_height="match_parent">
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerLayout">
+        <Spinner android:id="@+id/spinner_list"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:entries="@array/listZH"
+            android:textAlignment="center"/>
+        <Spinner android:id="@+id/spinner_timeframe"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:entries="@array/timeframeZH"
+            android:textAlignment="center"/>
+        <Spinner android:id="@+id/spinner_sort"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:entries="@array/sortZH"
+            android:textAlignment="center"/>
+    </LinearLayout>
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_below="@id/spinnerLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:id="@+id/refreshLayout"
+        tools:context="com.example.lvpeiling.nodddle.fragment.MainFragment">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_shots"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
         android:layout_margin="@dimen/fab_margin"
         android:src="@android:drawable/ic_dialog_email" />
-</android.support.v4.widget.SwipeRefreshLayout>
+</RelativeLayout>
