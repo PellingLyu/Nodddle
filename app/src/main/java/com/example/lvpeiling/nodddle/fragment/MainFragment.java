@@ -6,51 +6,47 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.lvpeiling.nodddle.R;
 import com.example.lvpeiling.nodddle.adapter.ShotsAdapter;
 import com.example.lvpeiling.nodddle.adapter.loadmore.EndlessRecyclerOnScrollListener;
+import com.example.lvpeiling.nodddle.adapter.loadmore.HeaderAndFooterWrapper;
 import com.example.lvpeiling.nodddle.model.ShotVO;
 import com.example.lvpeiling.nodddle.network.Api;
 import com.example.lvpeiling.nodddle.network.OkHttpClientManager;
 import com.example.lvpeiling.nodddle.network.ResultCallBack;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import butterknife.BindArray;
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import okhttp3.Call;
 import okhttp3.Response;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener{
 
     private static final String TAG = "MainFragment";
     @BindView(R.id.rv_shots)
     RecyclerView rvShots;
-    Unbinder unbinder;
     @BindView(R.id.refreshLayout)
     SwipeRefreshLayout refreshLayout;
     @BindView(R.id.fab)
@@ -61,7 +57,6 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     Spinner spinnerTimeframe;
     @BindView(R.id.spinner_sort)
     Spinner spinnerSort;
-    Unbinder unbinder1;
     private List<ShotVO> shots;
     private Context mContext;
     private ShotsAdapter shotsAdapter;
@@ -76,6 +71,8 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     private String list;
     private String timeframe;
     private String sort;
+    private HeaderAndFooterWrapper mHeaderAndFooterWrapper;
+    private ContentLoadingProgressBar progressBar;
 
     @Override
     public int getContentViewId() {
@@ -90,12 +87,13 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     @Override
     protected void initAllView(Bundle savedInstanceState) {
+        mContext = getContext();
         setView();
+        onRefresh();
     }
 
 
     private void setView() {
-        mContext = getContext();
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         rvShots.setLayoutManager(layoutManager);
         shotsAdapter = new ShotsAdapter();
@@ -106,27 +104,20 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                 list = listsArr[position];
                 onRefresh();
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
-
         spinnerSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 sort = sortArr[position];
                 onRefresh();
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
-
-
         spinnerTimeframe.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -136,18 +127,34 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
-        onRefresh();
+
         refreshLayout.setOnRefreshListener(this);
-        rvShots.addOnScrollListener(new EndlessRecyclerOnScrollListener(layoutManager) {
+        rvShots.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
             @Override
             public void onLoadMore() {
                 page++;
                 getDataFromNetwork(page, list, timeframe, sort);
             }
         });
+//        mHeaderAndFooterWrapper = new HeaderAndFooterWrapper(shotsAdapter);
+//        mLoadMoreWrapper = new LoadMoreWrapper(mHeaderAndFooterWrapper);
+//        mLoadMoreWrapper.setLoadMoreView(R.layout.common_list_footer);
+//        mLoadMoreWrapper.setOnLoadMoreListener(new LoadMoreWrapper.OnLoadMoreListener()
+//        {
+//            @Override
+//            public void onLoadMoreRequested()
+//            {
+//                page++;
+//                getDataFromNetwork(page, list, timeframe, sort);
+//            }
+//        });
+
+        rvShots.setAdapter(shotsAdapter);
+
+
+
     }
 
 
@@ -160,7 +167,6 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
             param.put("timeframe", timeframe);
         }
 
-        param.put("date", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
         if (!TextUtils.isEmpty(sort)) {
             param.put("sort", sort);
         }
@@ -172,6 +178,7 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                 if(refreshLayout.isRefreshing()){
                     refreshLayout.setRefreshing(false);
                 }
+
             }
 
             @Override
@@ -180,6 +187,10 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                 Response mResponse = (Response) response;
                 try {
                     String responceStr = mResponse.body().string();
+                    Log.e(TAG,responceStr);
+                    if (responceStr.length() <= 4){
+                        Toast.makeText(mContext,"暂无更多数据",Toast.LENGTH_SHORT).show();
+                    }
                     mShots = JSONObject.parseArray(responceStr, ShotVO.class);
                     if (page == 1) {
                         shots = mShots;
@@ -191,7 +202,6 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                     if(refreshLayout.isRefreshing()){
                         refreshLayout.setRefreshing(false);
                     }
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

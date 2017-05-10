@@ -11,6 +11,9 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.example.lvpeiling.nodddle.ActivitiesCollector;
 import com.example.lvpeiling.nodddle.R;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -35,31 +38,17 @@ public class SplashActivity extends AppCompatActivity {
         unbinder = ButterKnife.bind(this);
         splashLottie.setImageAssetsFolder("images/");
         splashLottie.setAnimation("data.json");
-        splashLottie.loop(false);
+        splashLottie.loop(true);
         splashLottie.playAnimation();
-        splashLottie.addAnimatorListener(new Animator.AnimatorListener() {
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
             @Override
-            public void onAnimationStart(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
+            public void run() {
                 Intent intent = new Intent(SplashActivity.this,SignInActivity.class);
                 startActivity(intent);
                 finish();
             }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        });
+        },3000);
     }
 
     @Override

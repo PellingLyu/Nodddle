@@ -1,7 +1,10 @@
 package com.example.lvpeiling.nodddle.adapter.loadmore;
 
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 
 /**
  * Created by lpl72 on 2017/5/9.
@@ -12,33 +15,88 @@ public abstract class EndlessRecyclerOnScrollListener extends
 
     private int previousTotal = 0;
     private boolean loading = true;
-    int firstVisibleItem, visibleItemCount, totalItemCount;
-    private LinearLayoutManager mLinearLayoutManager;
+    int firstVisibleItem, visibleItemCount, totalItemCount,lastVisibleItemPosition;
+    /**
+     * 当前RecyclerView类型
+     */
+    protected LayoutManagerType layoutManagerType;
 
-    public EndlessRecyclerOnScrollListener(
-            LinearLayoutManager linearLayoutManager) {
-        this.mLinearLayoutManager = linearLayoutManager;
+    /**
+     * 最后一个的位置
+     */
+    private int[] lastPositions;
+
+    @Override
+    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+        super.onScrollStateChanged(recyclerView, newState);
+        visibleItemCount = recyclerView.getChildCount();
+        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+        visibleItemCount = layoutManager.getChildCount();
+        totalItemCount = layoutManager.getItemCount();
+        if(visibleItemCount > 0 && newState == RecyclerView.SCROLL_STATE_IDLE && (lastVisibleItemPosition) >= totalItemCount - 1){
+            onLoadMore();
+        }
+
     }
 
     @Override
     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);
+        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
 
-        visibleItemCount = recyclerView.getChildCount();
-        totalItemCount = mLinearLayoutManager.getItemCount();
-        firstVisibleItem = mLinearLayoutManager.findFirstVisibleItemPosition();
-
-        if (loading) {
-            if (totalItemCount > previousTotal) {
-                loading = false;
-                previousTotal = totalItemCount;
+        if (layoutManagerType == null) {
+            if (layoutManager instanceof LinearLayoutManager) {
+                layoutManagerType = LayoutManagerType.LinearLayout;
+            } else if (layoutManager instanceof GridLayoutManager) {
+                layoutManagerType = LayoutManagerType.GridLayout;
+            } else if (layoutManager instanceof StaggeredGridLayoutManager) {
+                layoutManagerType = LayoutManagerType.StaggeredGridLayout;
+            } else {
+                throw new RuntimeException(
+                        "Unsupported LayoutManager used. Valid ones are LinearLayoutManager, GridLayoutManager and StaggeredGridLayoutManager");
             }
         }
-        if (!loading && (totalItemCount - visibleItemCount) <= firstVisibleItem) {
-            onLoadMore();
-            loading = true;
+
+        switch (layoutManagerType) {
+            case LinearLayout:
+                lastVisibleItemPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
+                break;
+            case GridLayout:
+                lastVisibleItemPosition = ((GridLayoutManager) layoutManager).findLastVisibleItemPosition();
+                break;
+            case StaggeredGridLayout:
+                StaggeredGridLayoutManager staggeredGridLayoutManager = (StaggeredGridLayoutManager) layoutManager;
+                if (lastPositions == null) {
+                    lastPositions = new int[staggeredGridLayoutManager.getSpanCount()];
+                }
+                staggeredGridLayoutManager.findLastVisibleItemPositions(lastPositions);
+                lastVisibleItemPosition = findMax(lastPositions);
+                break;
         }
     }
 
+    /**
+     * 取数组中最大值
+     *
+     * @param lastPositions
+     * @return
+     */
+    private int findMax(int[] lastPositions) {
+        int max = lastPositions[0];
+        for (int value : lastPositions) {
+            if (value > max) {
+                max = value;
+            }
+        }
+
+        return max;
+    }
+
     public abstract void onLoadMore();
+
+    public static enum LayoutManagerType {
+        LinearLayout,
+        StaggeredGridLayout,
+        GridLayout
+    }
 }
