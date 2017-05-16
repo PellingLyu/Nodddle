@@ -25,4 +25,6 @@ public class Api {
 
     public static final String USER_URL = API_URL + "user";
 
+    public static final String GET_SHOT_URL = SHOTS_URL + "/%s";
+
 }

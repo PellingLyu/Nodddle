@@ -90,7 +90,8 @@ public class MainActivity extends BaseActivity
         tvUsername = (TextView) headerLayout.findViewById(R.id.tv_username);
         tvName = (TextView) headerLayout.findViewById(R.id.tv_name);
         if(userVO != null){
-            Glide.with(this).load(userVO.getAvatar_url()).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.mipmap.placeholder).crossFade().into(ivAvatar);
+            Glide.with(this).load(userVO.getAvatar_url()).diskCacheStrategy(DiskCacheStrategy.ALL).
+                    placeholder(R.drawable.avatar_default).error(R.drawable.avatar_default).crossFade().into(ivAvatar);
             tvName.setText(userVO.getName());
             tvUsername.setText(userVO.getUsername());
         }
@@ -206,3 +207,4 @@ public class MainActivity extends BaseActivity
     }
 
 }
+

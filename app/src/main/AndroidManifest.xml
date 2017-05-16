@@ -32,7 +32,11 @@
         <activity
             android:name=".ui.ShotsDetailActivity"
             android:label="@string/title_activity_shots_detail"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.HomePageActivity"
+            android:label="@string/title_activity_home_page"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

@@ -2,6 +2,7 @@ package com.example.lvpeiling.nodddle.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -49,7 +50,7 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        ShotVO item;
+        final ShotVO item;
         if (mShots != null) {
             item = mShots.get(position);
             holder.tvComment.setText(item.getComments_count() + "");
@@ -60,6 +61,7 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsAdapter.ViewHolder> 
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(activity, ShotsDetailActivity.class);
+                    intent.putExtra("id",item.getId());
                     activity.startActivity(intent);
                 }
             });
