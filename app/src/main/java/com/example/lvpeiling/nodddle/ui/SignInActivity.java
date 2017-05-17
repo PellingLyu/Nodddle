@@ -55,7 +55,7 @@ public class SignInActivity extends BaseActivity {
     protected void initAllView(Bundle savedInstanceState) {
         webView.getSettings().setJavaScriptEnabled(true);//支持javascript
         webView.setWebViewClient(new OAuthWebViewClient());
-        webView.loadUrl(String.format(Api.AUTHORIZE_URL, Constants.CLIENT_ID));
+        webView.loadUrl(String.format(Api.AUTHORIZE_URL, Constants.CLIENT_ID,"public write comment"));
 
     }
 

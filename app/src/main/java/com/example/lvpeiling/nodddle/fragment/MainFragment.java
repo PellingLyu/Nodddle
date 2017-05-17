@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -175,10 +176,10 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
             @Override
             public void onError(Call call, Exception e) {
                 Log.e(TAG, e.getMessage());
+                Snackbar.make(rvShots,e.getMessage(),Snackbar.LENGTH_SHORT).show();
                 if(refreshLayout.isRefreshing()){
                     refreshLayout.setRefreshing(false);
                 }
-
             }
 
             @Override
@@ -190,6 +191,7 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                     Log.e(TAG,responceStr);
                     if (responceStr.length() <= 4){
                         Toast.makeText(mContext,"暂无更多数据",Toast.LENGTH_SHORT).show();
+                        return;
                     }
                     mShots = JSONObject.parseArray(responceStr, ShotVO.class);
                     if (page == 1) {

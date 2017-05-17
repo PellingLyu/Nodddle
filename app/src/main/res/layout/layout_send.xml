@@ -7,11 +7,13 @@
     android:paddingLeft="8dp"
     android:background="@color/white">
     <AutoCompleteTextView
+        android:id="@+id/actv_comment_body"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:hint="@string/add_commit"/>
     <ImageButton
+        android:id="@+id/ib_send"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@null"

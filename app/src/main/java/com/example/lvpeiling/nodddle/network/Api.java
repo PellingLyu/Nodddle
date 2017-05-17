@@ -15,7 +15,7 @@ public class Api {
      * scope
      * state
      */
-    public static final String AUTHORIZE_URL = URL + "oauth/authorize?client_id=%s";
+    public static final String AUTHORIZE_URL = URL + "oauth/authorize?client_id=%s&scope=%s";
 
     public static final String CALLBACK_URL = "http://www.nodddle.lvpeiling.com";
 
@@ -26,5 +26,12 @@ public class Api {
     public static final String USER_URL = API_URL + "user";
 
     public static final String GET_SHOT_URL = SHOTS_URL + "/%s";
+
+    public static final String LIKE_SHOT = GET_SHOT_URL + "/like";
+
+    public static final String COMMENT_SHOT = GET_SHOT_URL + "/comments";
+
+    public static final String CHECK_COMMENT_LIKE = COMMENT_SHOT +"/%s/like";
+
 
 }

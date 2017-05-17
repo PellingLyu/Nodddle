@@ -21,6 +21,7 @@
     <string name="get_no_more">暂无更多数据</string>
     <string name="net_error">出现网络错误，请连接后重试</string>
     <string-array name="list">
+        <item></item>
         <item>animated</item>
         <item>attachments</item>
         <item>debuts</item>
@@ -29,17 +30,20 @@
         <item>teams</item>
     </string-array>
     <string-array name="timeframe">
+        <item></item>
         <item>week</item>
         <item>month</item>
         <item>year</item>
         <item>ever</item>
     </string-array>
     <string-array name="sort">
+        <item></item>
         <item>recent</item>
         <item>comments</item>
         <item>views</item>
     </string-array>
     <string-array name="listZH">
+        <item>作品</item>
         <item>动画</item>
         <item>带附件</item>
         <item>首秀</item>
@@ -48,12 +52,14 @@
         <item>团队作品</item>
     </string-array>
     <string-array name="timeframeZH">
+        <item>当前</item>
         <item>一周内</item>
         <item>一个月内</item>
         <item>一年内</item>
         <item>时间不限</item>
     </string-array>
     <string-array name="sortZH">
+        <item>热门</item>
         <item>最新</item>
         <item>评论最多</item>
         <item>浏览最多</item>
@@ -61,6 +67,9 @@
     <string name="title_activity_shots_detail">ShotsDetailActivity</string>
     <string name="add_commit">添加评论</string>
     <string name="title_activity_home_page">HomePageActivity</string>
+    <string name="title_activity_comment">CommentActivity</string>
+    <string name="comment">评论</string>
+    <string name="share">分享</string>
 
 
 </resources>
