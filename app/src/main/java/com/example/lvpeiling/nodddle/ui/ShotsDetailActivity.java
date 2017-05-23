@@ -32,6 +32,7 @@ import com.example.lvpeiling.nodddle.model.UserVO;
 import com.example.lvpeiling.nodddle.network.Api;
 import com.example.lvpeiling.nodddle.network.OkHttpClientManager;
 import com.example.lvpeiling.nodddle.network.ResultCallBack;
+import com.example.lvpeiling.nodddle.util.ShareUtil;
 import com.example.lvpeiling.nodddle.view.CircleImageView;
 
 import java.io.IOException;
@@ -81,7 +82,7 @@ public class ShotsDetailActivity extends BaseActivity implements View.OnClickLis
     @BindView(R.id.iv_like)
     ImageView ivLike;
     private int likeCount;
-    private Context mContext;
+
 
 
     @Override
@@ -176,7 +177,6 @@ public class ShotsDetailActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void setView() {
-        mContext = this;
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -185,7 +185,7 @@ public class ShotsDetailActivity extends BaseActivity implements View.OnClickLis
                 switch (item.getItemId()){
                     case R.id.action_share:
                         if(shotItem.getHtml_url() != null){
-                            shareHtml(shotItem.getHtml_url() );
+                            ShareUtil.shareUrl(mContext,"Nodddle","我在Nodddle上看到一个优秀的作品，点击链接一起来看一下吧!!",shotItem.getHtml_url());
                         }
                         break;
                 }
@@ -202,17 +202,8 @@ public class ShotsDetailActivity extends BaseActivity implements View.OnClickLis
         fab.setOnClickListener(this);
         userView.setOnClickListener(this);
         ivLike.setOnClickListener(this);
+        ivPicture.setOnClickListener(this);
         checkIsLike();
-    }
-
-    private void shareHtml(String html_url) {
-        Intent share_intent = new Intent();
-        share_intent.setAction(Intent.ACTION_SEND);
-        share_intent.setType("text/plain");
-        share_intent.putExtra(Intent.EXTRA_SUBJECT,"Nodddle分享");
-        share_intent.putExtra(Intent.EXTRA_TEXT,"我在Nodddle上看到一个优秀的作品，点击链接一起来看一下吧!!"+html_url);
-        share_intent =Intent.createChooser(share_intent,"share");
-        startActivity(share_intent);
     }
 
     /**
@@ -253,6 +244,7 @@ public class ShotsDetailActivity extends BaseActivity implements View.OnClickLis
         switch (v.getId()) {
             case R.id.layout_user:
                 Intent userIntent = new Intent(ShotsDetailActivity.this, HomePageActivity.class);
+                userIntent.putExtra("userId",shotItem.getUser().getId());
                 startActivity(userIntent);
                 break;
             case R.id.fab:
@@ -265,6 +257,13 @@ public class ShotsDetailActivity extends BaseActivity implements View.OnClickLis
                     unlikeShot();
                 } else {
                     likeShot();
+                }
+                break;
+            case R.id.iv_picture:
+                Intent iamgeItent = new Intent(ShotsDetailActivity.this, LargeImageActivity.class);
+                if(shotItem != null && shotItem.getImages().getHidpi() != null){
+                    iamgeItent.putExtra("imageUrl",shotItem.getImages().getHidpi());
+                    startActivity(iamgeItent);
                 }
                 break;
             default:

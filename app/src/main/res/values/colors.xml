@@ -14,4 +14,5 @@
     <color name="pink500">#e93e61</color>
     <color name="pink300">#f06292</color>
     <color name="bluegrey200">#b0bec5</color>
+    <color name="black">#000000</color>
 </resources>

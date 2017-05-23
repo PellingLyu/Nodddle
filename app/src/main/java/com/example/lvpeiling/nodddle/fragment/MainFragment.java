@@ -50,8 +50,8 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     RecyclerView rvShots;
     @BindView(R.id.refreshLayout)
     SwipeRefreshLayout refreshLayout;
-    @BindView(R.id.fab)
-    FloatingActionButton fab;
+    //    @BindView(R.id.fab)
+//    FloatingActionButton fab;
     @BindView(R.id.spinner_list)
     Spinner spinnerList;
     @BindView(R.id.spinner_timeframe)
@@ -152,7 +152,6 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 //            }
 //        });
 
-        rvShots.setAdapter(shotsAdapter);
 
 
 

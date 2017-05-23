@@ -33,5 +33,16 @@ public class Api {
 
     public static final String CHECK_COMMENT_LIKE = COMMENT_SHOT +"/%s/like";
 
+    public static final String USERINFO = API_URL + "users/%s";
+
+    public static final String USER_SHOT = USERINFO + "/shots";
+
+    public static final String USER_FOLLOWING = USER_URL + "/following";
+
+    public static final String CHECK_USER_FOLLOWING = USER_FOLLOWING +"/%s";
+
+    public static final String FOLLOW_USER = USERINFO + "/follow";
+
+    public static final String USER_TEAM = USERINFO + "/teams";
 
 }

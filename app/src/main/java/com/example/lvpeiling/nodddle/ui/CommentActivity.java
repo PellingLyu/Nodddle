@@ -96,7 +96,10 @@ public class CommentActivity extends BaseActivity implements SwipeRefreshLayout.
                     String resp = mResponse.body().string();
                     if (resp.length() <= 4){
                         Toast.makeText(mContext,"暂无更多数据",Toast.LENGTH_SHORT).show();
-                        swipeRefresh.setRefreshing(false);
+                        if(swipeRefresh.isRefreshing()){
+                            swipeRefresh.setRefreshing(false);
+                        }
+
                         return;
                     }
                     commentList = JSONArray.parseArray(resp, CommentVO.class);
@@ -110,7 +113,9 @@ public class CommentActivity extends BaseActivity implements SwipeRefreshLayout.
                         mCommentAdapter.setCommentList(mCommentList);
                         mCommentAdapter.notifyDataSetChanged();
                     }
-                    swipeRefresh.setRefreshing(false);
+                    if(swipeRefresh.isRefreshing()){
+                        swipeRefresh.setRefreshing(false);
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -156,7 +161,4 @@ public class CommentActivity extends BaseActivity implements SwipeRefreshLayout.
     private void addComment() {
 
     }
-
-
-
 }
