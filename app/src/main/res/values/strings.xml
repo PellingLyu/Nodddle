@@ -73,6 +73,7 @@
     <string name="title_activity_user_info">UserInfoActivity</string>
     <string name="follow">关注</string>
     <string name="unfollow">取消关注</string>
+    <string name="no_bucket_data">抱歉，暂无个人作品集</string>
 
 
 </resources>

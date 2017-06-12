@@ -32,7 +32,9 @@ import com.example.lvpeiling.nodddle.util.ShareUtil;
 import com.example.lvpeiling.nodddle.view.CircleImageView;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -280,7 +282,9 @@ public class HomePageActivity extends BaseActivity implements SwipeRefreshLayout
             Snackbar.make(rvUserShots, "获取用户信息失败", Snackbar.LENGTH_SHORT).show();
             return;
         }
-        OkHttpClientManager.getInstance().getAsync(String.format(Api.USER_SHOT, userId + ""), null, new ResultCallBack() {
+        Map<String, Object> param = new HashMap<String, Object>();
+        param.put("page",String.valueOf(page));
+        OkHttpClientManager.getInstance().getAsync(String.format(Api.USER_SHOT, userId + ""), param, new ResultCallBack() {
             @Override
             public void onError(Call call, Exception e) {
                 if (swipeRefresh.isRefreshing()) {

@@ -3,9 +3,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.lvpeiling.nodddle.fragment.BucketsFragment">
-    <TextView
+
+    <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/refreshLayout">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_buckets"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+    <RelativeLayout
+        android:id="@+id/layout_no_bucket"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/no_bucket_data"/>
+    </RelativeLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@mipmap/add"
+        android:layout_gravity="bottom|right"/>
 
 </FrameLayout>

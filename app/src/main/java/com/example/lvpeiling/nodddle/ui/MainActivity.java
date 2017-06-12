@@ -20,6 +20,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.lvpeiling.nodddle.R;
 import com.example.lvpeiling.nodddle.fragment.BucketsFragment;
 import com.example.lvpeiling.nodddle.fragment.MainFragment;
+import com.example.lvpeiling.nodddle.fragment.MyInfoFragment;
+import com.example.lvpeiling.nodddle.fragment.ProjectFragment;
+import com.example.lvpeiling.nodddle.fragment.TeamFragment;
 import com.example.lvpeiling.nodddle.model.UserVO;
 import com.example.lvpeiling.nodddle.network.Api;
 import com.example.lvpeiling.nodddle.network.OkHttpClientManager;
@@ -47,6 +50,9 @@ public class MainActivity extends BaseActivity
     private FragmentTransaction fragmentTransaction;
     private MainFragment mainFragment;
     private BucketsFragment bucketsFragment;
+    private ProjectFragment projectFragment;
+    private TeamFragment teamFragment;
+    private MyInfoFragment myInfoFragment;
     @BindString(R.string.main)
     String mainStr;
     @BindString(R.string.projects)
@@ -154,6 +160,15 @@ public class MainActivity extends BaseActivity
         if (bucketsFragment != null) {
             fragmentTransaction.hide(bucketsFragment);
         }
+        if(projectFragment != null){
+            fragmentTransaction.hide(projectFragment);
+        }
+        if(teamFragment != null){
+            fragmentTransaction.hide(teamFragment);
+        }
+        if(myInfoFragment != null){
+            fragmentTransaction.hide(myInfoFragment);
+        }
         fragmentTransaction.commit();
     }
 
@@ -187,10 +202,36 @@ public class MainActivity extends BaseActivity
 
         } else if (id == R.id.nav_projects) {
             toolbar.setTitle(projectsStr);
+            hideAllFragments();
+            fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            if (projectFragment == null) {
+                projectFragment = new ProjectFragment();
+                fragmentTransaction.add(R.id.content_frame, projectFragment);
+                fragmentTransaction.commit();
+            } else {
+                fragmentTransaction.show(projectFragment).commit();
+            }
         } else if (id == R.id.nav_teams) {
             toolbar.setTitle(teamStr);
+            fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            if (teamFragment == null) {
+                teamFragment = new TeamFragment();
+                fragmentTransaction.add(R.id.content_frame, teamFragment);
+                fragmentTransaction.commit();
+            } else {
+                fragmentTransaction.show(teamFragment).commit();
+            }
         } else if (id == R.id.nav_mine) {
             toolbar.setTitle(mineStr);
+            hideAllFragments();
+            fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            if(myInfoFragment == null){
+                myInfoFragment = new MyInfoFragment();
+                fragmentTransaction.add(R.id.content_frame, myInfoFragment);
+                fragmentTransaction.commit();
+            }else {
+                fragmentTransaction.show(myInfoFragment).commit();
+            }
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {

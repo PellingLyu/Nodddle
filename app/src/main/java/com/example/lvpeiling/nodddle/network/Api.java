@@ -45,4 +45,9 @@ public class Api {
 
     public static final String USER_TEAM = USERINFO + "/teams";
 
+    public static final String  MY_BUCKETS= USER_URL + "/buckets";
+
+    public static final String USER_BUCKETS = API_URL + "users/%s/buckets";
+
+    public static final String BUCKET_SHOTS = API_URL + "buckets/%s/shots";
 }
